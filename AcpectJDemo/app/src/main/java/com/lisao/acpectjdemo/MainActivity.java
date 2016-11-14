@@ -1,12 +1,19 @@
 package com.lisao.acpectjdemo;
 
+import android.nfc.Tag;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
-import com.lisao.acpectjlib.BehaviorTrace;
+import com.lisao.aspectjlib.BehaviorPagerScope;
+import com.lisao.aspectjlib.BehaviorTrace;
+import com.lisao.aspectjlib.PagerScope;
+
+import static android.R.attr.name;
+import static android.R.attr.start;
+import static android.R.attr.value;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -20,7 +27,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private static final String behaviorThree = "语音通话";
     private static final String behaviorFour = "视频通话";
 
+    private String name = "统计名称";
+
     @Override
+    @BehaviorPagerScope(value = PagerScope.onCreate, fieldName = "name")
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
@@ -77,5 +87,36 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @BehaviorTrace(behaviorFour)
     private void behaviorFour() {
         Toast.makeText(this, "behaviorFour", Toast.LENGTH_LONG).show();
+    }
+
+
+    @Override
+    @BehaviorPagerScope(value = PagerScope.onStart, fieldName = "name")
+    protected void onStart() {
+        super.onStart();
+    }
+
+    @Override
+    @BehaviorPagerScope(value = PagerScope.onResume, fieldName = "name")
+    protected void onResume() {
+        super.onResume();
+    }
+
+    @Override
+    @BehaviorPagerScope(value = PagerScope.onPause, fieldName = "name")
+    protected void onPause() {
+        super.onPause();
+    }
+
+    @Override
+    @BehaviorPagerScope(value = PagerScope.onStop, fieldName = "name")
+    protected void onStop() {
+        super.onStop();
+    }
+
+    @Override
+    @BehaviorPagerScope(value = PagerScope.onDestroy, fieldName = "name")
+    protected void onDestroy() {
+        super.onDestroy();
     }
 }

@@ -1,4 +1,4 @@
-package com.lisao.acpectjlib;
+package com.lisao.aspectjlib;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

@@ -1,4 +1,4 @@
-package com.lisao.acpectjlib;
+package com.lisao.aspectjlib;
 
 import android.app.Application;
 import android.test.ApplicationTestCase;

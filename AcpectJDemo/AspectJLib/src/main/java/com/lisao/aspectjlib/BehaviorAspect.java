@@ -1,15 +1,15 @@
-package com.lisao.acpectjlib;
+package com.lisao.aspectjlib;
 
 import android.util.Log;
 
-import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
-import org.aspectj.lang.reflect.MemberSignature;
 import org.aspectj.lang.reflect.MethodSignature;
+import org.aspectj.lang.reflect.SourceLocation;
 
+import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -22,7 +22,7 @@ public class BehaviorAspect {
     private SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
     private static final String TAG = "BehaviorAspect";
 
-    @Pointcut("execution(@com.lisao.acpectjlib.BehaviorTrace * *(..))")
+    @Pointcut("execution(@com.lisao.aspectjlib.BehaviorTrace * *(..))")
     public void behaviorPointCut() {
     }
 
@@ -30,7 +30,8 @@ public class BehaviorAspect {
     public Object behaviorAround(ProceedingJoinPoint proceedingJoinPoint) throws Throwable {
         //方法执行前
         MethodSignature methodSignature = (MethodSignature) proceedingJoinPoint.getSignature();
-        BehaviorTrace behaviorTrace = methodSignature.getMethod().getAnnotation(BehaviorTrace.class);
+        Method method = methodSignature.getMethod();
+        BehaviorTrace behaviorTrace = method.getAnnotation(BehaviorTrace.class);
         String behaviorValue = behaviorTrace.value();
         Log.d(TAG, behaviorValue + "开始执行,当期时间" + dateFormat.format(new Date()));
         long begin = System.currentTimeMillis();
@@ -42,4 +43,24 @@ public class BehaviorAspect {
         return result;
 
     }
+
+    @Pointcut("execution(@com.lisao.aspectjlib.BehaviorPagerScope * *(..))")
+    public void behaviorScope() {
+    }
+
+//    @Around("behaviorScope()")
+//    public Object pagerScope(ProceedingJoinPoint joinPoint) throws Throwable {
+//        MethodSignature methodSignature = (MethodSignature) joinPoint.getSignature();
+//        SourceLocation sourceLocation = joinPoint.getSourceLocation();
+//        Class clz = sourceLocation.getWithinType();
+//        Method method = methodSignature.getMethod();
+//        BehaviorPagerScope annotation = method.getAnnotation(BehaviorPagerScope.class);
+//        Field field = clz.getDeclaredField(annotation.fieldName());
+//        field.setAccessible(true);
+//        String value = (String) field.get(joinPoint.getTarget());
+//        PagerScope scope = annotation.value();
+//        Log.d(TAG, clz.getSimpleName() + "生命周期" + scope.toString() + "开始执行" + "name is " + value);
+//        Object result = joinPoint.proceed();
+//        return result;
+//    }
 }
